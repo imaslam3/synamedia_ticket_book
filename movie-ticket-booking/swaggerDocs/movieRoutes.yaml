@@ -1,0 +1,125 @@
+openapi: 3.0.0
+info:
+  title: Movie Ticket Booking API
+  version: 1.0.0
+  description: API documentation for the Movie Ticket Booking System
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local server
+
+paths:
+  /movies/book:
+    post:
+      summary: Book a movie ticket
+      tags:
+        - Movies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                movieTitle:
+                  type: string
+                showtime:
+                  type: string
+      responses:
+        "201":
+          description: Ticket booked successfully
+        "400":
+          description: Error in booking ticket
+
+  /movies/ticket/{email}:
+    get:
+      summary: View ticket details by email
+      tags:
+        - Movies
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ticket details retrieved
+        "404":
+          description: No ticket found
+
+  /movies/attendees/{movieTitle}/{showtime}:
+    get:
+      summary: View all attendees for a movie
+      tags:
+        - Movies
+      parameters:
+        - in: path
+          name: movieTitle
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: showtime
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of attendees
+        "404":
+          description: No attendees found
+
+  /movies/cancel:
+    delete:
+      summary: Cancel a movie ticket
+      tags:
+        - Movies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                movieTitle:
+                  type: string
+                showtime:
+                  type: string
+      responses:
+        "200":
+          description: Ticket cancelled successfully
+        "400":
+          description: Ticket not found
+
+  /movies/modify-seat:
+    put:
+      summary: Modify seat assignment
+      tags:
+        - Movies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                movieTitle:
+                  type: string
+                showtime:
+                  type: string
+                newSeatNumber:
+                  type: integer
+      responses:
+        "200":
+          description: Seat modified successfully
+        "400":
+          description: Ticket not found
